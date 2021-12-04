@@ -60,18 +60,18 @@ def distribute(nums, c0, c1, sigBit):
 
 
 def isOGR(num, c0, c1, sigBit):
-   return (c0 >= c1 and (~num & sigBit)) or (c1 >= c0 and (num & sigBit))
+   return (c1 >= c0 and (num & sigBit)) or (c0 > c1 and (~num & sigBit))
 
 
 def isCSR(num, c0, c1, sigBit):
-   return (c0 <= c1 and (~num & sigBit)) or (c1 <= c0 and (num & sigBit))
+   return (c0 <= c1 and (~num & sigBit)) or (c1 < c0 and (num & sigBit))
 
 
 def findOGR(nums, sigBit):
    logger.debug('Finding OGR in %s at position %s', nums, sigBit)
    if len(nums) < 3:
       result = nums[0]
-      if len(nums)>1 and isOGR(nums[1], 1, 1, sigBit):
+      if len(nums) > 1 and isOGR(nums[1], 1, 1, sigBit):
          result = nums[1]
       logger.debug('Found OGR as %s', result)
       return result
@@ -85,7 +85,7 @@ def findCSR(nums, sigBit):
    logger.debug('Finding CSR in %s at position %s', nums, sigBit)
    if len(nums) < 3:
       result = nums[0]
-      if len(nums)>1 and  isCSR(nums[1], 1, 1, sigBit):
+      if len(nums) > 1 and isCSR(nums[1], 1, 1, sigBit):
          result = nums[1]
       logger.debug('Found CSR as %s', result)
       return result
