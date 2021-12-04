@@ -1,3 +1,9 @@
+import logging.config
+
+logging.config.fileConfig('../logging.conf')
+logger = logging.getLogger(__name__)
+
+
 def main():
    file1 = open('d03in.txt', 'r')
    lines = file1.readlines()
@@ -23,7 +29,7 @@ def main():
          else:
             c0[i] += 1
       
-      log(f'{data}:{num:0{size}b} ==> {c0}, {c1} ')
+      logger.debug(f'{data}:{num:0{size}b} ==> {c0}, {c1} ')
    
    # Now calculate the gamma and epsilon
    size = len(c0)
@@ -36,14 +42,9 @@ def main():
          gamma += 1
       else:
          epsilon += 1
-      log(f'Testing {c1[i]}, {c0[i]} ==> {gamma:0{size}b}:{gamma}, {epsilon:0{size}b}: {epsilon}')
+      logger.debug(f'Testing {c1[i]}, {c0[i]} ==> {gamma:0{size}b}:{gamma}, {epsilon:0{size}b}: {epsilon}')
    
    print(f'{gamma * epsilon}')
-
-
-def log(string):
-   # print(string)
-   pass
 
 
 if __name__ == '__main__':
