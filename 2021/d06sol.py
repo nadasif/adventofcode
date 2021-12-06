@@ -3,26 +3,30 @@ import logging.config
 logging.config.fileConfig('../logging.conf')
 logger = logging.getLogger(__name__)
 
-
-class Fish:
-   def __init__(self, daysLeftToReproduce):
-      self.baby: Fish = None
-      self.daysLeftToReproduce = daysLeftToReproduce
+class School:
    
+   def __init__(self):
+      self.counts = {str(f'f({i})'): 0 for i in range(9)}
+      
+   def add(self, txt):
+      self.counts[f'f({txt})'] += 1
+      
    def dayPassed(self):
-      self.daysLeftToReproduce -= 1
-      if self.daysLeftToReproduce < 0:
-         self.daysLeftToReproduce = 6
-         self.baby = Fish(8)
-   
-   def collectBaby(self):
-      baby = self.baby
-      self.baby = None
-      return baby
-   
-   def __repr__(self):
-      return f'f({self.daysLeftToReproduce})'
+      f0 = self.counts['f(0)']
+      for n in range(8):
+         self.counts[f'f({n})'] = self.counts[f'f({n+1})']
+      self.counts['f(6)'] += f0
+      self.counts['f(8)'] = f0
+      print(self.counts)
+      
+   def count(self):
+      result = 0
+      for k in self.counts:
+         result += self.counts[k]
+      return result
 
+   def __repr__(self):
+      return self.counts.__repr__()
 
 def fileLines(filename):
    file1 = open(filename, 'r')
@@ -32,27 +36,19 @@ def fileLines(filename):
 
 
 def main():
-   school = []
+
+   school = School()
+
    lines = fileLines('d06in.txt')
-   
    for txt in lines[0].split(','):
-      fish = Fish(int(txt))
-      school.append(fish)
-      logger.debug(fish)
-   logger.debug(school)
+      school.add(txt)
    
+   print(school)
    for d in range(256):
-      babies = []
-      for f in school:
-         f.dayPassed()
-         baby = f.collectBaby()
-         if baby is not None:
-            babies.append(baby)
-      
-      school.extend(babies)
-      logger.debug('After %s days: %s', d+1, len(school))
+      school.dayPassed()
    
-   print(len(school))
+   print(school.count())
+   
 
 if __name__ == '__main__':
    main()
