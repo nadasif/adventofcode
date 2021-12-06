@@ -20,6 +20,7 @@ class Line:
       points = txt.strip().split()
       self.point1 = Point(points[0])
       self.point2 = Point(points[2])
+      self._points = []
    
    def isHorizontal(self):
       return self.point1.y == self.point2.y
@@ -31,25 +32,27 @@ class Line:
       return abs(self.point1.x - self.point2.x) == abs(self.point1.y - self.point2.y)
    
    def points(self):
+      if len(self._points) > 0:
+         return self._points
+      
       p1x = self.point1.x
       p2x = self.point2.x
       p1y = self.point1.y
       p2y = self.point2.y
       dx = 1 if p2x > p1x else -1
       dy = 1 if p2y > p1y else -1
-      result = []
       if self.isHorizontal():
          y = self.point1.y
          for x in range(p1x, p2x + dx, dx):
-            result.append(Point(f'{x},{y}'))
+            self._points.append(Point(f'{x},{y}'))
       elif self.isVertical():
          x = self.point1.x
          for y in range(p1y, p2y + dy, dy):
-            result.append(Point(f'{x},{y}'))
+            self._points.append(Point(f'{x},{y}'))
       elif self.isDiagonal():
          for n in range(abs(p2x - p1x + dx)):
-            result.append(Point(f'{p1x + n * dx}, {p1y + n * dy}'))
-      return result
+            self._points.append(Point(f'{p1x + n * dx}, {p1y + n * dy}'))
+      return self._points
    
    def __repr__(self):
       return f'{self.point1} -> {self.point2}'
