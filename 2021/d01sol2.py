@@ -19,10 +19,10 @@ def main():
       if len(queue) < 3:
          pass
       elif len(queue) == 3:
-         lastSum = sumOf(queue)
+         lastSum = sum(queue)
       else:
          queue.pop(0)
-         currSum = sumOf(queue)
+         currSum = sum(queue)
          
          if currSum > lastSum:
             status = '(inc)'
@@ -34,11 +34,6 @@ def main():
       logger.debug('%s, %s', num, queue)
    
    print(f'{count}')
-
-
-def sumOf(queue):
-   return queue[0] + queue[1] + queue[2]
-
 
 if __name__ == "__main__":
    main()
