@@ -20,10 +20,7 @@ class School:
       print(self.counts)
       
    def count(self):
-      result = 0
-      for k in self.counts:
-         result += self.counts[k]
-      return result
+      return sum(self.counts.values())
 
    def __repr__(self):
       return self.counts.__repr__()
