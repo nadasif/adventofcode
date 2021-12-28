@@ -1,119 +1,98 @@
 import os
 
-paths = {'': 0}
-
 
 class Node:
-    def __init__(Self, data, r, c, p):
-        Self.r = r
-        Self.c = c
-        Self.w = data['lines'][r][c]
-        Self.p = p
-        Self.f = 0
-        Self.g = 0
-        Self.h = data['rows'] - r + data['cols'] - c - 2
-
-    def isLocSame(Self, node):
-        return Self.r == node.r and Self.c == node.c
-
-    def __repr__(Self):
-        return f'N({Self.r},{Self.c},{Self.w},{Self.f},{Self.h})'
+   def __init__(self, r, c, p):
+      self.r = r
+      self.c = c
+      self.key = f'{r:03}{c:03}'
+      self.w = Node.map[r][c]
+      self.p = p
+      self.f = 0 if p is None else p.f + self.w
+      self.g = 0
+      self.h = Node.rows - r + Node.cols - c - 2
+   
+   def successors(self):
+      lst = []
+      if self.r > 0:
+         lst.append(Node(self.r - 1, self.c, self))
+      if self.r < Node.rows - 1:
+         lst.append(Node(self.r + 1, self.c, self))
+      if self.c > 0:
+         lst.append(Node(self.r, self.c - 1, self))
+      if self.c < Node.cols - 1:
+         lst.append(Node(self.r, self.c + 1, self))
+      
+      return list(filter(lambda l: not l.isSkip(), lst))
+   
+   def isSkip(self):
+      if self.key not in Node.lowest:
+         Node.lowest[self.key] = self
+      elif Node.lowest[self.key].f > self.f:
+         Node.lowest[self.key] = self
+      
+      if self.f > Node.lowest[self.key].f:
+         return True
+      p = self.p
+      while p:
+         if self == p:
+            return True
+         p = p.p
+      return False
+   
+   def __repr__(self):
+      return f'N({self.key},{self.w},{self.f},{self.p is not None})'
+   
+   def __eq__(self, node):
+      return node is not None and self.r == node.r and self.c == node.c
 
 
 def byF(node: Node):
-    return node.f
+   return node.f
 
 
 def main():
-    data = loadData('.sd')
-    print(f"Processing {data['cols']} x {data['rows']}")
-    # print(f'{paths}')
-    # path(data, '', 38)
-    # print(f'{paths}')
-
-    findPath(data)
-
-def findPath(data):
-    start = Node(data, 0, 0, None)
-    end = Node(data, data['rows'] - 1, data['cols'] - 1, None)
-    print(f'First Node: {start}')
-    print(f'Last Node: {end}')
-    lst = successors(data, start, end)
-    print(f'Next: {lst}')
-    
-
-def successors(data, node, dest):
-    lst = []
-    if node.r > 0:
-        lst.append(Node(data, node.r - 1, node.c, node))
-    if node.r < dest.r:
-        lst.append(Node(data, node.r + 1, node.c, node))
-    if node.c > 0:
-        lst.append(Node(data, node.r, node.c - 1, node))
-    if node.c < dest.c:
-        lst.append(Node(data, node.r, node.c + 1, node))
-    return lst
-
-def findPathOld(data):
-    dest = Node(data, data['rows'] - 1, data['cols'] - 1, None)
-    openList = [Node(data, 0, 0, None)]
-    closedList = []
-
-    while len(openList) > 0:
-        openList.sort(key=byF)
-        print(f'Open  : {openList}')
-        print(f'Closed: {closedList}')
-        q = openList.pop()
-        print(f'{q}')
-
-        # Find successors
-        successors = []
-        if q.r > 0:
-            successors.append(Node(data, q.r - 1, q.c, q))
-        if q.r < dest.r:
-            successors.append(Node(data, q.r + 1, q.c, q))
-        if q.c > 0:
-            successors.append(Node(data, q.r, q.c - 1, q))
-        if q.c < dest.c:
-            successors.append(Node(data, q.r, q.c + 1, q))
-
-        # Now reject or accept the successors
-        for s in successors:
-            skipNode = q.p and s.isLocSame(q.p)
-            if s.isLocSame(dest):
-                openList.clear()
-                break
-
-            s.g = q.g + 1
-            s.f = s.g + s.h + s.w + q.w
-
-            for n in openList:
-                if n.isLocSame(s) and n.f < s.f:
-                    skipNode = True
-            for n in closedList:
-                if n.isLocSame(s) and n.f < s.f:
-                    skipNode = True
-
-            if not skipNode:
-                openList.append(s)
-        print(f'Next: {successors}')
-
-        closedList.append(q)
+   loadData('.sd')
+   print(f"Processing {Node.cols} x {Node.rows}")
+   start = Node(0, 0, None)
+   end = Node(Node.rows - 1, Node.cols - 1, None)
+   Node.lowest = {start.key: start}
+   print(f'{Node.lowest}')
+   findPathNew(start, end)
+   print(f"Part 1: {Node.lowest[end.key]}")
+   
+   
+   
+   
 
 
-def distLeft(r, c, dr, dc):
-    return abs(r - dr) + abs(c - dc)
+def findPathRecursive(start, end):
+   # print(f'\nFrom {start} to {end}')
+   for s in start.successors():
+      findPathRecursive(s, end)
+
+
+def findPathNew(start, end):
+   openList = {start.key: start}
+   while len(openList) > 0:
+      # print(f'Open  : {openList.values()}')
+      k = sorted(openList.values(), key=byF)[0].key
+      q = openList.pop(k)
+      for s in q.successors():
+         if s.key not in openList:
+            openList[s.key] = s
+         elif openList[s.key].f > s.f:
+            openList[s.key] = s
 
 
 def loadData(ext):
-    filename = os.path.splitext(__file__)[0] + ext
-    file = open(filename, 'r')
-    lines = list(map(lambda l: [int(c) for c in l.strip()], file.readlines()))
-    file.close()
-    d = {'rows': len(lines), 'cols': len(lines[0]), 'lines': lines}
-
-    return d
+   filename = os.path.splitext(__file__)[0] + ext
+   file = open(filename, 'r')
+   Node.map = list(map(lambda l: [int(c) for c in l.strip()], file.readlines()))
+   file.close()
+   Node.rows = len(Node.map)
+   Node.cols = len(Node.map[0])
 
 
 if __name__ == "__main__":
-    main()
+   main()
