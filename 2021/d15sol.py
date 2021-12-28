@@ -51,28 +51,49 @@ def byF(node: Node):
    return node.f
 
 
+def levelUp(value):
+   return 1 if value == 9 else value + 1
+
+
+def extendMap():
+   for r in range(Node.rows):
+      for c in range(Node.cols*4):
+         Node.map[r].append(levelUp(Node.map[r][c]))
+   Node.cols *= 5
+   for r in range(Node.rows*4):
+      row = []
+      for c in range(Node.cols):
+         row.append(levelUp(Node.map[r][c]))
+      Node.map.append(row)
+   Node.rows *= 5
+   
+def showMap():
+   for r in range(Node.rows):
+      s = ''
+      for c in range(Node.cols):
+         s += f'{Node.map[r][c]}'
+      print(s)
+
+
 def main():
-   loadData('.sd')
+   loadData('.in')
+   showMap()
    print(f"Processing {Node.cols} x {Node.rows}")
    start = Node(0, 0, None)
-   end = Node(Node.rows - 1, Node.cols - 1, None)
    Node.lowest = {start.key: start}
-   print(f'{Node.lowest}')
-   findPathNew(start, end)
+   findPath(start)
+   end = Node(Node.rows - 1, Node.cols - 1, None)
    print(f"Part 1: {Node.lowest[end.key]}")
-   
-   
-   
-   
+
+   extendMap()
+   showMap()
+   Node.lowest = {start.key: start}
+   findPath(start)
+   end = Node(Node.rows - 1, Node.cols - 1, None)
+   print(f"Part 2: {Node.lowest[end.key]}")
 
 
-def findPathRecursive(start, end):
-   # print(f'\nFrom {start} to {end}')
-   for s in start.successors():
-      findPathRecursive(s, end)
-
-
-def findPathNew(start, end):
+def findPath(start):
    openList = {start.key: start}
    while len(openList) > 0:
       # print(f'Open  : {openList.values()}')
