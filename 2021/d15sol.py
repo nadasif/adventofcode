@@ -2,6 +2,9 @@ import os
 
 
 class Node:
+   rows = cols = 0
+   map = lowest = None
+   
    def __init__(self, r, c, p):
       self.r = r
       self.c = c
@@ -113,7 +116,6 @@ def loadData(ext):
    file.close()
    Node.rows = len(Node.map)
    Node.cols = len(Node.map[0])
-
 
 if __name__ == "__main__":
    main()
