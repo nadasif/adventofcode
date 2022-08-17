@@ -1,55 +1,55 @@
 
 class Statement:
     def __init__(self, prog, ip):
-        self.__prog = prog
-        self.__type = prog.getAddress(ip)
-        self.__args = []
-        if self.__type in [1,2]:
+        self._prog = prog
+        self._type = prog.getAddress(ip)
+        self._args = []
+        if self._type in [1,2]:
             self.nextIp = ip + 4
-            self.__args = [prog.getAddress(ip + i + 1) for i in range(3)]
+            self._args = [prog.getAddress(ip + i + 1) for i in range(3)]
         else:
             self.nextIp = ip + 1
 
     def execute(self):
         self.show()
-        if self.__type in [1,2]:
+        if self._type in [1,2]:
             self.calculate()
-        elif self.__type == 99:
+        elif self._type == 99:
             return 0
         return 1
 
     def show(self):
-        # print(f'{self.__type}: {self.__args}')
+        # print(f'{self._type}: {self._args}')
         pass
 
     def calculate(self):
-        v1 = self.__prog.getAddress(self.__args[0])
-        v2 = self.__prog.getAddress(self.__args[1])
-        if self.__type == 1:
-            self.__prog.setAddress(self.__args[2], v1 + v2)
+        v1 = self._prog.getAddress(self._args[0])
+        v2 = self._prog.getAddress(self._args[1])
+        if self._type == 1:
+            self._prog.setAddress(self._args[2], v1 + v2)
         else:
-            self.__prog.setAddress(self.__args[2], v1 * v2)
+            self._prog.setAddress(self._args[2], v1 * v2)
 
 class Program:
     def __init__(self, text):
-        self.__memory = [*map( int, text.split(","))]
-        self.__ip = 0
+        self._memory = [*map(int, text.split(","))]
+        self._ip = 0
 
     def execute(self):
-        stmt = self.__next()
+        stmt = self._next()
         while stmt.execute():
-            stmt = self.__next()
+            stmt = self._next()
 
-    def __next(self):
-        stmt = Statement(self, self.__ip)
-        self.__ip = stmt.nextIp
+    def _next(self):
+        stmt = Statement(self, self._ip)
+        self._ip = stmt.nextIp
         return stmt
 
     def setAddress(self, loc, value):
-        self.__memory[loc] = value
+        self._memory[loc] = value
 
     def getAddress(self, loc):
-        return self.__memory[loc]
+        return self._memory[loc]
 
 def loadData():
     filename = __file__[:-3] + ".in"
