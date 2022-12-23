@@ -1,63 +1,33 @@
 import os
 
-
-class Cell:
-    def __init__(self, c):
-        self.n = int(c)
-        self.v = False
-        self.s = 0
-
-    def __repr__(self):
-        return f"{self.n}{'*' if self.v else ' '} "
-
-
-class Part2:
+class Grid:
     def __init__(self, txt):
-        self.grid = [[Cell(c) for c in s] for s in txt.split()]
-        self.rows = len(self.grid)
-        self.cols = len(self.grid[0])
+        self.grid = [[int(c) for c in lst] for lst in txt.split()]
 
     def visibleCount(self):
-        s = 0
-        for r in range(self.rows):
-            for c in range(self.cols):
-                s += 1 if self.grid[r][c].v else 0
+        rows, cols = len(self.grid), len(self.grid[0])
 
-        return s
+        def visible(i, j, direction, h):
+            while 0 < i < (rows-1) and 0 < j < (cols-1):
+                i, j = (i + direction[0], j + direction[1])
+                if self.grid[i][j] >= h:
+                    return False
+            return True
 
-    def markVisible(self):
-        for r in range(self.rows):
-            self.grid[r][0].v = True
-            self.grid[r][self.cols-1].v = True
-            # horizontal
-            left = self.grid[r][0].n
-            right = self.grid[r][self.cols-1].n
-            for c in range(self.rows):
-                if self.grid[r][c].n > left:
-                    self.grid[r][c].v = True
-                    left = self.grid[r][c].n
-                if self.grid[r][self.cols-1-c].n > right:
-                    self.grid[r][self.cols - 1 - c].v = True
-                    right = self.grid[r][self.cols - 1 - c].n
+        count = (cols + rows - 2) * 2
+        for r in range(1, rows-1):
+            for c in range(1, cols-1):
+                height = self.grid[r][c]
+                if (visible(r, c, (-1, 0), height)  or
+                        visible(r, c, (1, 0), height) or
+                        visible(r, c, (0, -1), height) or
+                        visible(r, c, (0, 1), height)):
+                    count += 1
 
-        for c in range(self.cols):
-            self.grid[0][c].v = True
-            self.grid[self.rows-1][c].v = True
-            # vertical
-            top = self.grid[0][c].n
-            bot = self.grid[self.rows-1][c].n
-            for r in range(self.rows):
-                if self.grid[r][c].n > top:
-                    self.grid[r][c].v = True
-                    top = self.grid[r][c].n
-                if self.grid[self.rows-1-r][c].n > bot:
-                    self.grid[self.rows - 1 - r][c].v = True
-                    bot = self.grid[self.rows - 1 - r][c].n
-
+        return count
 
     def __repr__(self):
-        return '\n'.join( ''.join(f"{cell}" for cell in cells) for cells in self.grid )
-
+        return f"#<P1:>"
 
 def loadData(ext: str):
     filename = os.path.splitext(__file__)[0] + ext
@@ -71,9 +41,7 @@ def main():
     txt = loadData('.in')
 
     print("\nPart 1")
-    grid = Part2(txt)
-    grid.markVisible()
-    print(grid)
+    grid = Grid(txt)
     print(grid.visibleCount())
 
     print("\nPart 2")
