@@ -1,29 +1,11 @@
 import os
 
-
-class Part1:
-    def __init__(self, txt):
-        pass
-
-    def __repr__(self):
-        return f"#<P1:>"
-
-
-class Part2:
-    def __init__(self, txt):
-        pass
-
-    def __repr__(self):
-        return f"#<P2:>"
-
-
 def loadData(ext: str):
     filename = os.path.splitext(__file__)[0] + ext
     file = open(filename, 'r')
     data = file.read()
     file.close()
     return data
-
 
 def minmax(lst, x, y):
     print(f"{lst}; {x}, {y} --> ", end='')
@@ -133,7 +115,6 @@ def main():
 
     print("\nPart 2")
     print(len(drops) - len(rocks))
-
 
 if __name__ == "__main__":
     main()
