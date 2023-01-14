@@ -1,2 +1,7 @@
 venv/
 .idea/
+/templates/
+/lib/
+*.sqlite
+main.py
+test.py

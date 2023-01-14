@@ -55,7 +55,7 @@ class Program:
 def loadData():
     filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
     file1 = open(filename, 'r')
-    text = file1.read()
+    text = file1.read().strip()
     file1.close()
     return text
 

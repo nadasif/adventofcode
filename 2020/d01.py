@@ -1,3 +1,4 @@
+import os.path
 import logging.config
 
 logging.config.fileConfig('../logging.conf')
@@ -10,13 +11,17 @@ lined = '''1721
 675
 1456'''.split()
 
+def loadData():
+    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
+    file1 = open(filename, 'r')
+    text = file1.read().strip()
+    file1.close()
+    return text
 
 def main():
-    file1 = open('d01in.txt', 'r')
-    lines = file1.readlines()
-    file1.close()
+    lines = loadData().split('\n')
 
-    nums = list(map(lambda o: int(o.strip()), lines))
+    nums = list(map(int, lines))
 
     for i in range(len(nums) - 1):
         for j in range(i, len(nums)):
