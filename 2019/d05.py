@@ -1,3 +1,4 @@
+import os.path
 
 class Statement:
     def __init__(self, prog, ip):
@@ -61,7 +62,7 @@ class Program:
         return self._memory[loc]
 
 def loadData():
-    filename = __file__[:-3] + ".in"
+    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
     file1 = open(filename, 'r')
     text = file1.read()
     file1.close()

@@ -1,3 +1,5 @@
+import os.path
+
 class Point:
     _cache = dict()
     def __new__(cls, x, y):
@@ -32,7 +34,7 @@ def log(text):
     pass
 
 def loadData():
-    filename = __file__[:-3] + ".in"
+    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
     file1 = open(filename, 'r')
     text = file1.read()
     file1.close()
