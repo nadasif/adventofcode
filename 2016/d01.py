@@ -1,5 +1,4 @@
-import os
-
+import os.path
 
 class Command:
     def __init__(self, txt):
@@ -42,15 +41,15 @@ class Grid:
     def __repr__(self):
         return f'{self.loc} to {self.dir}'
 
-def loadData(ext: str):
-    filename = os.path.splitext(__file__)[0] + ext
-    file = open(filename, 'r')
-    data = file.read()
-    file.close()
-    return data
+def loadData():
+    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
+    f = open(filename, "r")
+    txt = f.read().strip()
+    f.close()
+    return txt
 
 def main():
-    txt = loadData('.in')
+    txt = loadData()
     lines = txt.split(', ')
     cmds = list(map(Command, lines))
 
@@ -64,8 +63,6 @@ def main():
     print("\nPart 2")
     #print(grid.visited)
     print(grid.visitedTwice)
-
-    pass
 
 
 if __name__ == "__main__":
