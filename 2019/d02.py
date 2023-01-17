@@ -1,4 +1,4 @@
-import os.path
+import os
 
 class Statement:
     def __init__(self, prog, ip):
@@ -53,11 +53,8 @@ class Program:
         return self._memory[loc]
 
 def loadData():
-    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
-    file1 = open(filename, 'r')
-    text = file1.read().strip()
-    file1.close()
-    return text
+    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
+        return f.read().strip()
 
 def run(text, x, y):
     prog = Program(text)
@@ -76,10 +73,14 @@ def find(text):
 
 def main():
     text = loadData()
-    print(f'Part 1: {run(text, 12, 2)}')
+
+    print("\nPart 1")
+    print(run(text, 12, 2))
+
+    print("\nPart 2")
     pair = find(text)
-    print(f'Part 2: {pair[0] * 100 + pair[1]}')
+    print(pair[0] * 100 + pair[1])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
-

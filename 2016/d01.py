@@ -1,4 +1,4 @@
-import os.path
+import os
 
 class Command:
     def __init__(self, txt):
@@ -42,16 +42,11 @@ class Grid:
         return f'{self.loc} to {self.dir}'
 
 def loadData():
-    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
-    f = open(filename, "r")
-    txt = f.read().strip()
-    f.close()
-    return txt
+    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
+        return f.read().strip()
 
 def main():
-    txt = loadData()
-    lines = txt.split(', ')
-    cmds = list(map(Command, lines))
+    cmds = list(map(Command, loadData().split(', ')))
 
     grid = Grid()
     for cmd in cmds:
@@ -61,7 +56,6 @@ def main():
     print(grid)
 
     print("\nPart 2")
-    #print(grid.visited)
     print(grid.visitedTwice)
 
 

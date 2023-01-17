@@ -1,12 +1,9 @@
-import os.path
+import os
 
 
 def loadData():
-    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
-    f = open(filename, "r")
-    txt = f.read().strip()
-    f.close()
-    return txt
+    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
+        return f.read().strip()
 
 def basement(lst):
     s = 0

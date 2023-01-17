@@ -1,4 +1,4 @@
-import os.path
+import os
 
 class Point:
     _cache = dict()
@@ -28,28 +28,23 @@ class Line:
         else:
             pass
 
-
-def log(text):
-    print(text)
-    pass
-
 def loadData():
-    filename = f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt"
-    file1 = open(filename, 'r')
-    text = file1.read()
-    file1.close()
-    return text
+    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
+        return f.read().strip()
 
 def main():
     text = loadData()
-    log(text)
+
 
     print(id(Point(1,1)))
     print(id(Point(1,2)))
     print(id(Point(1,2)))
     print(id(Point(1,1)))
 
+    print("\nPart 1")
+
+    print("\nPart 2")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
