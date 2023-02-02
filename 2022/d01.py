@@ -1,25 +1,16 @@
 import os
 
-def loadData(ext: str):
-    filename = os.path.splitext(__file__)[0] + ext
-    file = open(filename, 'r')
-    data = file.read()
-    file.close()
-    return data
 
-
+def loadData():
+    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
+        return f.read().strip()
 
 def main():
-    txt = loadData('.in')
-    elvesCal = txt.split('\n\n')
+    txt = loadData()
 
-    lst = list(map(lambda ec : sum(map(int, ec.split())) , elvesCal))
     print("\nPart 1")
-    print( max(lst))
-    print("\nPart 2")
-    print(sum(sorted(lst, reverse=True)[0:3]))
 
-    pass
+    print("\nPart 2")
 
 
 if __name__ == "__main__":

@@ -1,28 +1,16 @@
 import os
 
-def loadData(ext: str):
-    filename = os.path.splitext(__file__)[0] + ext
-    file = open(filename, 'r')
-    data = file.read()
-    file.close()
-    return data
 
-def findFirst(txt, n):
-    for i in range(len(txt)-n):
-        if len(set(txt[i:i+n])) == n:
-            return i + n
+def loadData():
+    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
+        return f.read().strip()
 
 def main():
-    txt = loadData('.in')
+    txt = loadData()
 
     print("\nPart 1")
-    print(findFirst(txt, 4))
 
     print("\nPart 2")
-    print(findFirst(txt, 14))
-
-
-    pass
 
 
 if __name__ == "__main__":
