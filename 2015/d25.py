@@ -1,17 +1,12 @@
-import os
-
-
-def loadData():
-    with open(f"in-{os.path.splitext(os.path.basename(__file__))[0]}.txt", "r") as f:
-        return f.read().strip()
+from lib.mylib import loadData
 
 def main():
-    txt = loadData()
-
-    print("\nPart 1")
-
-    print("\nPart 2")
+	txt = loadData()
+	
+	print("\nPart 1")
+	
+	print("\nPart 2")
 
 
 if __name__ == "__main__":
-    main()
+	main()
