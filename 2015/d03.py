@@ -4,7 +4,6 @@ from lib.mylib import loadData
 
 
 class Santa:
-
     def __init__(self):
         self.pos = 0
 

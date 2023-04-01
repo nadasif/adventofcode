@@ -44,8 +44,6 @@ def main():
     print("\nPart 2")
     flt = [s for s in ses if s.isNice2()]
     print(len(flt))
-    for s in flt:
-        print(s.s)
 
 
 if __name__ == "__main__":

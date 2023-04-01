@@ -1,5 +1,6 @@
-from lib.mylib import loadData
 import hashlib
+
+from lib.mylib import loadData
 
 
 def find_idx(txt, zCount):
