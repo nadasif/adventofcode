@@ -37,10 +37,10 @@ def main():
     passwords = list(map(Password, loadData().split('\n')))
 
     print("\nPart 1")
-    print(len(list(filter(lambda pwd: pwd.is_valid(), passwords))))
+    print(len(list(filter(Password.is_valid, passwords))))
 
     print("\nPart 2")
-    print(len(list(filter(lambda pwd: pwd.is_valid2(), passwords))))
+    print(len(list(filter(Password.is_valid2, passwords))))
 
 
 if __name__ == "__main__":
