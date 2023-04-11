@@ -10,18 +10,7 @@ def main():
     print(sum(map(lambda s: len(set(s.replace('\n', ''))), groups)))
 
     print("\nPart 2")
-    print()
-
-    print(len(groups))
-    total = 0
-    for members in groups:
-        all_yes = set(members)
-        for member in members.split('\n'):
-            all_yes &= set(member)
-        #print(len(all_yes))
-        total += len(all_yes)
-    print(total)
-
+    print(sum(map(len, map(lambda group: reduce(lambda s1, s2: set(s1) & set(s2), group.split('\n')), groups))))
 
 
 if __name__ == "__main__":
