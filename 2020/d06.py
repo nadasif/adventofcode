@@ -3,14 +3,12 @@ from functools import reduce
 from lib.mylib import loadData, Stream
 
 
-def square(x):
-    return x ** 2
-
-
 def main():
     groups = loadData().split('\n\n')
     print("\nPart 1")
-    print(sum(map(lambda s: len(set(s.replace('\n', ''))), groups)))
+    print(Stream(groups)
+          .map(lambda s: len(set(s.replace('\n', ''))))
+          .sum())
 
     print("\nPart 2")
     print(Stream(groups)
