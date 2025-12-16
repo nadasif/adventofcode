@@ -1,6 +1,13 @@
 import inspect
 import re
 
+class Counter:
+    def __init__(self):
+        self.count = 0
+
+    def inc(self):
+        self.count += 1
+
 
 class Stream:
     def __init__(self, iterable):
